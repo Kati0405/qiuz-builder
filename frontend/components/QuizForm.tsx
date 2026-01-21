@@ -1,9 +1,8 @@
 'use client';
 
-import { QuizCreateFormValues } from '@/lib/schemas';
+import { QuizCreateFormValues, quizCreateSchema } from '@/lib/schemas';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { quizCreateSchema } from '@/lib/schemas';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { apiCreateQuiz } from '@/lib/api';
 import QuestionEditor from './QuestionEditor';
@@ -56,67 +55,93 @@ export default function QuizForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      style={{ maxWidth: 900, margin: '0 auto', padding: 24 }}
+      className='mx-auto max-w-4xl px-6 py-8'
     >
-      <h1>Create Quiz</h1>
-      <div style={{ marginTop: 16 }}>
-        <label>
+      <h1 className='text-2xl font-semibold text-gray-900'>Create Quiz</h1>
+
+      <div className='mt-6'>
+        <label className='block text-sm font-medium text-gray-700'>
           Title
           <input
             {...register('title')}
-            style={{ display: 'block', width: '100%', marginTop: 6 }}
+            className='mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
+            placeholder='e.g. JavaScript basics'
           />
         </label>
 
         {errors.title && (
-          <p style={{ color: 'crimson' }}>{errors.title.message}</p>
+          <p className='mt-2 text-sm text-red-600'>{errors.title.message}</p>
         )}
       </div>
-      <div style={{ marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        <button type='button' onClick={() => addQuestion('boolean')}>
+
+      <div className='mt-6 flex flex-wrap gap-2'>
+        <button
+          type='button'
+          onClick={() => addQuestion('boolean')}
+          className='rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm transition hover:bg-gray-50'
+        >
           + Boolean
         </button>
-        <button type='button' onClick={() => addQuestion('input')}>
+
+        <button
+          type='button'
+          onClick={() => addQuestion('input')}
+          className='rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm transition hover:bg-gray-50'
+        >
           + Input
         </button>
-        <button type='button' onClick={() => addQuestion('checkbox')}>
+
+        <button
+          type='button'
+          onClick={() => addQuestion('checkbox')}
+          className='rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm transition hover:bg-gray-50'
+        >
           + Checkbox
         </button>
       </div>
 
       {errors.questions && typeof errors.questions.message === 'string' && (
-        <p style={{ color: 'crimson' }}>{errors.questions.message}</p>
+        <p className='mt-3 text-sm text-red-600'>{errors.questions.message}</p>
       )}
 
-      <div style={{ marginTop: 24, display: 'grid', gap: 16 }}>
+      <div className='mt-8 grid gap-4'>
         {fields.map((field, idx) => (
           <div
             key={field.id}
-            style={{ border: '1px solid #ddd', borderRadius: 12, padding: 16 }}
+            className='rounded-xl border border-gray-200 bg-white p-4 shadow-sm'
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: 12,
-              }}
-            >
-              <strong>Question #{idx + 1}</strong>
-              <button type='button' onClick={() => remove(idx)}>
+            <div className='flex items-center justify-between gap-3'>
+              <strong className='text-sm font-semibold text-gray-900'>
+                Question #{idx + 1}
+              </strong>
+
+              <button
+                type='button'
+                onClick={() => remove(idx)}
+                className='rounded-md px-3 py-1.5 text-sm font-medium text-gray-500 transition hover:bg-gray-100 hover:text-gray-900'
+              >
                 Remove
               </button>
             </div>
 
-            <QuestionEditor form={form} index={idx} />
+            <div className='mt-4'>
+              <QuestionEditor form={form} index={idx} />
+            </div>
+
             {errors.questions?.[idx]?.text && (
-              <p style={{ color: 'crimson' }}>
+              <p className='mt-2 text-sm text-red-600'>
                 {errors.questions[idx]?.text?.message as string}
               </p>
             )}
           </div>
         ))}
       </div>
-      <button type='submit' disabled={isSubmitting} style={{ marginTop: 24 }}>
+
+      <button
+        type='submit'
+        disabled={isSubmitting}
+        className='mt-8 inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60'
+      >
         {isSubmitting ? 'Saving...' : 'Create quiz'}
       </button>
     </form>
