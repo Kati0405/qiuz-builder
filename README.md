@@ -28,10 +28,12 @@ Users can create quizzes with different question types and view them in a list o
 
 ## Project Structure
 
+```md
 quiz-builder/
 ├── backend/ # NestJS API + Prisma
 ├── frontend/ # Next.js app
 └── README.md
+```
 
 ---
 
