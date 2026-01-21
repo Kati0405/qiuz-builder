@@ -121,4 +121,43 @@ export class QuizzesService {
     await this.prisma.quiz.delete({ where: { id } });
     return { ok: true };
   }
+
+  async seed() {
+    const payloads = [
+      {
+        title: 'Demo: Math',
+        questions: [
+          { type: 'boolean', text: '2+2=4?', correctBoolean: true },
+          { type: 'input', text: 'What is 5+7?', correctText: '12' },
+          {
+            type: 'checkbox',
+            text: 'Select prime numbers',
+            options: [
+              { text: '2', isCorrect: true },
+              { text: '3', isCorrect: true },
+              { text: '4', isCorrect: false },
+              { text: '9', isCorrect: false },
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Demo: Birds',
+        questions: [
+          { type: 'boolean', text: 'Penguins can fly', correctBoolean: false },
+          {
+            type: 'input',
+            text: 'National bird of USA?',
+            correctText: 'Bald eagle',
+          },
+        ],
+      },
+    ];
+
+    const created = [];
+    for (const dto of payloads as any[]) {
+      created.push(await this.create(dto));
+    }
+    return { created };
+  }
 }

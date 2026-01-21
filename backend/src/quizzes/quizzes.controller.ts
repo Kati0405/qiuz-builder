@@ -25,4 +25,9 @@ export class QuizzesController {
   remove(@Param('id') id: string) {
     return this.quizzes.remove(id);
   }
+
+  @Post('seed')
+  seed() {
+    return this.quizzes.seed();
+  }
 }
